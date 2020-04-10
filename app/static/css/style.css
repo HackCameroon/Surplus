@@ -1,0 +1,26 @@
+:root{
+	--light-green: 	#e1e1ac;
+    --medium-green: #adab70;
+    --pink: #e2a883;
+    --light-brown: #ab7551;
+    --dark-red: #783433;
+    --tomato: #ff6347;
+}
+
+
+#index-body{
+	background-color: var(--light-green); !important;
+	width: 100%;
+	height: 100%;
+}
+
+#SearchButton {
+	border-color: var(--dark-red); !important
+	color: var(--dark-red); !important
+}
+
+#SearchInput {
+	border-color: var(--dark-red); !important
+}
+
+
