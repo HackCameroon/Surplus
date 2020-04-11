@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
-from app.forms import LoginForm
+from app.forms import LoginForm, SearchForm
 import requests
 
 
@@ -9,8 +9,9 @@ import requests
 @app.route('/index')
 
 def index():
+	search = SearchForm()
 	user = {"username": "Sally"}
-	return render_template('index.html', title="Home", user=user)
+	return render_template('index.html', title="Home", user=user, search=search)
 
 
 @app.route('/login', methods=['GET','POST'])
@@ -24,7 +25,6 @@ def login():
 
 @app.route('/account')
 def account():
-
 	ip_request = requests.get('https://get.geojs.io/v1/ip.json')
 	my_ip = ip_request.json()['ip'] 
 
