@@ -1,5 +1,8 @@
-from flask import render_template
+from flask import render_template, flash, redirect, url_for
 from app import app
+from app.forms import LoginForm
+
+app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 @app.route('/')
 @app.route('/index')
@@ -8,6 +11,12 @@ def index():
 	user = {"username": "Sally"}
 	return render_template('index.html', title="Home", user=user)
 
-@app.route(/'login')
+
+@app.route('/login', methods=['GET','POST'])
 def login():
-	return render_template('account.html', title="Login")
+	form = LoginForm()
+	if form.validate_on_submit():
+		flash('Login requested for user {}, remember_me={}'.format(
+			form.username.data, form.remember_me.data))
+		return redirect('/index')
+	return render_template('login.html', title='Sign In',form=form)
