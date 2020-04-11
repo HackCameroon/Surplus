@@ -2,7 +2,6 @@ from flask import render_template, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm
 
-app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 @app.route('/')
 @app.route('/index')
