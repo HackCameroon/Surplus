@@ -20,3 +20,26 @@ def login():
 			form.username.data, form.remember_me.data))
 		return redirect('/index')
 	return render_template('login.html', title='Sign In',form=form)
+
+@app.route('/account')
+def account():
+	user = {"username": "La Barca"}
+	items = [
+				{
+					'name': 'margarita mix', 
+					'price': 5.00
+				},
+				{
+					'name': 'chicken soup',
+					'price': 2.00 
+				}, 
+				{
+					'name': 'beans',
+					'price': 16.00
+				}, 
+				{
+					'name': 'that one hot waiter',
+					'price': 0.00
+				} 
+			]
+	return render_template('account.html', title="Account", items=items, user=user)
