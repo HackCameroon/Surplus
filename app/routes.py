@@ -1,17 +1,16 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
-from app.forms import LoginForm, SearchForm
+from app.forms import LoginForm, SearchForm, SignupForm
 import requests
 
 
 
 @app.route('/')
 @app.route('/index')
-
 def index():
 	search = SearchForm()
 	user = {"username": "Sally"}
-	return render_template('index.html', title="Home", user=user, search=search)
+	return render_template('index.html', title="Home", user=user)
 
 
 @app.route('/login', methods=['GET','POST'])
@@ -22,6 +21,11 @@ def login():
 			form.username.data, form.remember_me.data))
 		return redirect(url_for('index'))
 	return render_template('login.html', title='Sign In',form=form)
+
+@app.route('/signup')
+def signup():
+	form = SignupForm()
+	return render_template('signup.html', title='Sign Up', form=form)
 
 @app.route('/account')
 def account():
