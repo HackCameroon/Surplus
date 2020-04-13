@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField
+from wtforms import StringField, IntegerField, PasswordField, BooleanField, SubmitField, FloatField
 from wtforms.validators import DataRequired, EqualTo
 
 class LoginForm(FlaskForm):
@@ -14,12 +14,16 @@ class SearchForm(FlaskForm):
 
 class SignupForm(FlaskForm):
 	username = StringField('Username', validators=[DataRequired()])
-	email = StringField('Email Address', validators=[DataRequired()])
-	password = PasswordField('Password', validators=[
+	restaurant_email = StringField('Restaurant Email Address', validators=[DataRequired()])
+	restaurant_password = PasswordField('Password', validators=[
 		DataRequired(),
 		EqualTo('confirm', message='Passwords must match')]
 		)
 	confirm = PasswordField('Repeat Password')
-	restaurantConf = BooleanField('Restaurant Account?')
-	acceptTerms = BooleanField('I accept the Terms of Service and Privacy', validators=[DataRequired()])
+	restaurant_name = StringField('Restaurant Name', validators=[DataRequired()])
+	restaurant_phone = IntegerField('Phone Number', validators=[DataRequired()])
+	restaurant_street = StringField('Restaurant Street Adress', validators=[DataRequired()])
+	restaurant_city = StringField('City', validators=[DataRequired()])
+	restaurant_state = StringField('State', validators=[DataRequired()])
+	restaurant_zipcode = IntegerField('Zipcode', validators=[DataRequired()])
 	submit = SubmitField('Sign In')

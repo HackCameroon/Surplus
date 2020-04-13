@@ -44,6 +44,17 @@ def create_user():
 @app.route('/signup')
 def signup():
 	form = SignupForm()
+	if form.validate_on_submit():
+			username = form.username.data
+			restaurant_name = form.restaurant_name.data
+			restaurant_phone = form.restaurant_phone.data
+			restaurant_zipcode = form.restaurant_zipcode.data
+			address = form.restaurant_street.data + form.restaurant_city.data + form.restaurant_state.data
+			new_restaurant = Restaurant(r_name= restaurant_name,
+				password_hash = "random password")
+			db.session.add(new_restaurant)
+			db.session.commit()
+			return redirect(url_for('index')) 
 	return render_template('signup.html', title='Sign Up', form=form)
 
 @app.route('/account')
