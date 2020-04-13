@@ -1,8 +1,8 @@
 
 from flask import request, render_template, flash, redirect, url_for, make_response
 from flask import current_app as app
-from .forms import LoginForm, SearchForm, SignupForm
-from .models import db, Seller
+from app.forms import LoginForm, SearchForm, SignupForm
+from app.models import db, Seller
 
 
 
