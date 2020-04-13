@@ -2,7 +2,7 @@
 from flask import request, render_template, flash, redirect, url_for, make_response
 from flask import current_app as app
 from .forms import LoginForm, SearchForm, SignupForm
-from .models import db, Restaurant
+from .models import db, Seller
 
 
 
@@ -23,10 +23,6 @@ def login():
 		flash('Login requested for user {}, remember_me={}'.format(
 			form.username.data, form.remember_me.data))
 		user = form.username.data
-		new_restaurant = Restaurant(r_name= user,
-									password_hash = "random password")
-		db.session.add(new_restaurant)
-		db.session.commit()
 		return redirect(url_for('index'))
 
 	return render_template('login.html', title='Sign In',form=form,search=search)
