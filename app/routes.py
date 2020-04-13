@@ -1,7 +1,8 @@
-from flask import render_template, flash, redirect, url_for
-from app import app
-from app.forms import LoginForm, SearchForm, SignupForm
-import requests
+
+from flask import request, render_template, flash, redirect, url_for, make_response
+from flask import current_app as app
+from .forms import LoginForm, SearchForm, SignupForm
+from .models import db, Restaurant
 
 
 
@@ -12,15 +13,37 @@ def index():
 	user = {"username": "Sally"}
 	return render_template('index.html', title="Home", user=user)
 
-
+#sally is the best friend EVER
 @app.route('/login', methods=['GET','POST'])
 def login():
+	search = SearchForm()
 	form = LoginForm()
 	if form.validate_on_submit():
+
 		flash('Login requested for user {}, remember_me={}'.format(
 			form.username.data, form.remember_me.data))
+		user = form.username.data
+		new_restaurant = Restaurant(r_name= user,
+									password_hash = "random password")
+		db.session.add(new_restaurant)
+		db.session.commit()
 		return redirect(url_for('index'))
-	return render_template('login.html', title='Sign In',form=form)
+
+	return render_template('login.html', title='Sign In',form=form,search=search)
+
+@app.route("/user", methods=['GET', 'POST'])
+def create_user():
+	username = request.args.get('user')
+	email = request.args.get('email')
+	if username and email:
+		new_user = User(username = username,
+						email = email,
+						created = dt.now(),
+						bio= "rando bio",
+						admin = False)
+		db.session.add(new_user)
+		db.session.commit()
+	return make_response("successfully created!")
 
 @app.route('/signup')
 def signup():
@@ -29,6 +52,7 @@ def signup():
 
 @app.route('/account')
 def account():
+	search = SearchForm()
 	ip_request = requests.get('https://get.geojs.io/v1/ip.json')
 	my_ip = ip_request.json()['ip'] 
 
@@ -55,4 +79,4 @@ def account():
 					'price': 0.00
 				} 
 			]
-	return render_template('account.html', title="Account", items=items, user=user, geo_data=geo_data)
+	return render_template('account.html', title="Account", items=items, user=user, geo_data=geo_data, search=search)
