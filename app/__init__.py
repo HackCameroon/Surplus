@@ -6,7 +6,6 @@ from flask_migrate import Migrate
 db = SQLAlchemy()
 
 def create_app():
-
 	app = Flask(__name__, instance_relative_config=False)
 	app.run(debug=True)
 	app.config.from_object(Config)
@@ -17,10 +16,6 @@ def create_app():
 		db.create_all()
 
 		return app
-# r = Restaurant(r_name="Chanos", r_address="123 USC Rd", phone="(123)-456-7890", password_hash="fhlaksdjfhlaksjdhf" )
-# print(r)
-# db.session.add(r)
-# db.session.commit()
 
 
 		
