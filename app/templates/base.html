@@ -16,7 +16,6 @@
              <div class="container-fluid">
                 <a class="navbar-brand" href="{{url_for('index')}}">Sur+</a>
               <form class="form-inline my-2 my-lg-0" action="" method="get">
-                  <div class="input-text">{{search.searchParam(size=32)}}</div>
                   <input class="form-control mr-sm-2" type="text" placeholder="Restaurant or Item" aria-label="Search">
                   <input class="form-control mr-sm-2" type="text" placeholder="Distance From Me" aria-label="Search">
                   <span>mi  </span>
@@ -27,8 +26,14 @@
                   <span>  km</span>
                   <button class="btn my-2 my-sm-0" type="submit">Go</button>
                 </form>
-
-                <button class = "btn my-2 my-sm-0" type="submit">Login</button>
+                <a href="/login" class="btn my-2 my-sm-0">Log In</a>
+<!-- 
+                <button class = "btn my-2 my-sm-0" type="submit">Login</button> -->
+                <a href="/signup" class="btn my-2 my-sm-0">Sign Up</a>
+<!--                 <button class = "btn my-2 my-sm-0" type="submit">Sign Up</button>         -->        
+<!--                 <div>
+                  <a href="/signup">Sign Up</a>
+                </div> -->
 
               </div>  
           </nav>

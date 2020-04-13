@@ -1,20 +1,19 @@
+
 from flask import request, render_template, flash, redirect, url_for, make_response
 from flask import current_app as app
-from .forms import LoginForm, SearchForm
+from .forms import LoginForm, SearchForm, SignupForm
 from .models import db, User, Restaurant
-
 
 
 
 @app.route('/')
 @app.route('/index')
-
 def index():
 	search = SearchForm()
 	user = {"username": "Sally"}
-	return render_template('index.html', title="Home", user=user, search=search)
+	return render_template('index.html', title="Home", user=user)
 
-
+#sally is the best friend EVER
 @app.route('/login', methods=['GET','POST'])
 def login():
 	search = SearchForm()
@@ -45,6 +44,11 @@ def create_user():
 		db.session.add(new_user)
 		db.session.commit()
 	return make_response("successfully created!")
+
+@app.route('/signup')
+def signup():
+	form = SignupForm()
+	return render_template('signup.html', title='Sign Up', form=form)
 
 @app.route('/account')
 def account():
