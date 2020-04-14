@@ -3,7 +3,7 @@ from wtforms import StringField, IntegerField, PasswordField, BooleanField, Subm
 from wtforms.validators import DataRequired, EqualTo
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
@@ -25,4 +25,4 @@ class SignupForm(FlaskForm):
 	restaurant_city = StringField('City', validators=[DataRequired()])
 	restaurant_state = StringField('State', validators=[DataRequired()])
 	restaurant_zipcode = IntegerField('Zipcode', validators=[DataRequired()])
-	submit = SubmitField('Sign In')
+	submit = SubmitField('Sign Up')

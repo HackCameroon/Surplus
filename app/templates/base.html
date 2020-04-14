@@ -26,10 +26,14 @@
                   <span>  km</span>
                   <button class="btn my-2 my-sm-0" type="submit">Go</button>
                 </form>
-                <a href="/login" class="btn my-2 my-sm-0">Log In</a>
-<!-- 
-                <button class = "btn my-2 my-sm-0" type="submit">Login</button> -->
-                <a href="/signup" class="btn my-2 my-sm-0">Sign Up</a>
+                {% if session.get('logged_in') == True %}
+                  <a href="/logout" class="btn my-2 my-sm-0">Log Out</a>
+                {% else %}
+                  <a href="/login" class="btn my-2 my-sm-0">Log In</a>
+  <!-- 
+                  <button class = "btn my-2 my-sm-0" type="submit">Login</button> -->
+                  <a href="/signup" class="btn my-2 my-sm-0">Sign Up</a>
+                {% endif %}
 <!--                 <button class = "btn my-2 my-sm-0" type="submit">Sign Up</button>         -->        
 <!--                 <div>
                   <a href="/signup">Sign Up</a>

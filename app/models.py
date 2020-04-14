@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 directoryPath = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
@@ -12,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
 
-class seller(db.Model):
+class seller(UserMixin, db.Model):
     seller_id = db.Column(db.Integer, primary_key=True)
     seller_email = db.Column(db.String, unique=True)
     seller_name = db.Column(db.String)
@@ -35,7 +36,7 @@ class seller(db.Model):
 
 class Inventory(db.Model):
     item_id = db.Column(db.Integer, primary_key=True)
-    seller_id = db.Column(db.Integer, foreign_key=True)
+    seller_id = db.Column(db.Integer, db.ForeignKey('seller.seller_id'))
     item_name = db.Column(db.String)
     item_price = db.Column(db.String)
     item_quantity = db.Column(db.Integer)
