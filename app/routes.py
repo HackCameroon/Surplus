@@ -2,7 +2,8 @@
 from flask import request, render_template, flash, redirect, url_for, make_response
 from flask import current_app as app
 from app.forms import LoginForm, SearchForm, SignupForm
-from app.models import db, Seller
+from app.models import db, seller, Inventory
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -27,46 +28,35 @@ def login():
 
 	return render_template('login.html', title='Sign In',form=form,search=search)
 
-@app.route("/user", methods=['GET', 'POST'])
-def create_user():
-	username = request.args.get('user')
-	email = request.args.get('email')
-	if username and email:
-		new_user = User(username = username,
-						email = email,
-						created = dt.now(),
-						bio= "rando bio",
-						admin = False)
-		db.session.add(new_user)
-		db.session.commit()
-	return make_response("successfully created!")
-
-@app.route('/signup')
+@app.route('/signup', methods=['GET','POST'])
 def signup():
 	form = SignupForm()
 	if form.validate_on_submit():
-			username = form.username.data
-			restaurant_name = form.restaurant_name.data
-			restaurant_phone = form.restaurant_phone.data
-			restaurant_zipcode = form.restaurant_zipcode.data
+			name = form.restaurant_name.data
+			email = form.restaurant_email.data
+			phone = form.restaurant_phone.data
+			zipcode = form.restaurant_zipcode.data
 			address = form.restaurant_street.data + form.restaurant_city.data + form.restaurant_state.data
-			new_restaurant = Restaurant(r_name= restaurant_name,
-				password_hash = "random password")
-			db.session.add(new_restaurant)
+			new_seller = seller(
+								seller_name=name,
+								seller_email= email,
+								seller_phone=phone,
+								seller_zipcode=zipcode,
+								seller_address=address
+				)
+			new_seller.set_password(form.restaurant_password.data)
+			db.session.add(new_seller)
 			db.session.commit()
 			return redirect(url_for('index')) 
+
 	return render_template('signup.html', title='Sign Up', form=form)
 
 @app.route('/account')
 def account():
 	search = SearchForm()
-	ip_request = requests.get('https://get.geojs.io/v1/ip.json')
-	my_ip = ip_request.json()['ip'] 
-
-	geo_request_url = 'https://get.geojs.io/v1/ip/geo/' + my_ip + '.json'
-	geo_request = requests.get(geo_request_url)
-	geo_data = geo_request.json()
-	print(geo_data)
+	current_user = "La Barca"
+	inventory = Inventory.query.filter_by(Inventory.Seller(has (seller_name=current_user))).all()
+	print(inventory)
 	user = {"username": "La Barca"}
 	items = [
 				{
@@ -86,4 +76,4 @@ def account():
 					'price': 0.00
 				} 
 			]
-	return render_template('account.html', title="Account", items=items, user=user, geo_data=geo_data, search=search)
+	return render_template('account.html', title="Account", items=items, user=user, search=search)
