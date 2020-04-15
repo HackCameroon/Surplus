@@ -76,7 +76,7 @@ def account():
 
 	## Code to add an item to a seller's inventory
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-	name = "riagtoni dinner"
+	name = "my cool dinner"
 	item = Inventory(item_name=name, item_price='$10.00', item_quantity = 1, item_image = "image.jpg", item_description = "yummy", seller=current_user)
 	db.session.add(item)
 	db.session.commit()
@@ -84,14 +84,21 @@ def account():
 
 	##get duplicate results so we can add to quantity instead of adding another exact item
 	duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
-	##
-
+	## need to do the quantity thing
 	for result in duplicate_results:
 		print (result.item_name, result.item_id)
+	##
 
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+	item_array = []
 	items = current_user.items
 	for item in items:
+		#temp = {
+				#	'name': item.item_name,
+				#	'price': item.item_price,
+				#	'quantity': item.item_quantity
+				#}
+		#item_array_one.add(temp)
 		print(item.item_name)
 	item_array = [
 				{
