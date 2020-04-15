@@ -26,3 +26,11 @@ class SignupForm(FlaskForm):
 	restaurant_state = StringField('State', validators=[DataRequired()])
 	restaurant_zipcode = IntegerField('Zipcode', validators=[DataRequired()])
 	submit = SubmitField('Sign Up')
+
+class AddItemForm(FlaskForm):
+	itemname = StringField('Item Name', validators=[DataRequired()])
+	itemquantity = IntegerField('Quantity', validators=[DataRequired()])
+	itemprice = FloatField("Price", validators=[DataRequired()])
+	#itempicture = do this later
+	itemdescription = StringField('Description', validators=[DataRequired()])
+	submit = SubmitField('Add')
