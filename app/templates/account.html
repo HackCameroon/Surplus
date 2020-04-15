@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<a href='/add' ><button class="btn my-2 my-sm-0 btn-dark float-right px-5">New Item</button></a>
 <div class="row">
 	<div class="col-sm-2">
 	</div>
@@ -11,11 +13,15 @@
 			<table class="table table-striped" style="background-color: white;">
 				<th scope="col">Item</th>
 				<th scope="col">Price</th>
+				<th scope="col">Quantity</th>
+				<th scope="col">Description</th>
 				<th></th>
 				{% for item in items %}
 				<tr>
 					<td>{{item.name}}</td>
 					<td>${{'%0.2f'|format(item.price|float)}}</td>
+					<td>${{(item.quantity)}}</td>
+					<td>${{(item.description)}}</td>
 					<td><button class="btn my-2 my-sm-0 btn-dark float-right px-5">Edit</button></td>
 				</tr>
 				{% endfor %}
