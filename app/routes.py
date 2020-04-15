@@ -73,8 +73,27 @@ def logout():
 @app.route('/account')
 def account():
 	search = SearchForm()
+
+	## Code to add an item to a seller's inventory
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-	items = [
+	name = "riagtoni dinner"
+	item = Inventory(item_name=name, item_price='$10.00', item_quantity = 1, item_image = "image.jpg", item_description = "yummy", seller=current_user)
+	db.session.add(item)
+	db.session.commit()
+	##
+
+	##get duplicate results so we can add to quantity instead of adding another exact item
+	duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
+	##
+
+	for result in duplicate_results:
+		print (result.item_name, result.item_id)
+
+	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+	items = current_user.items
+	for item in items:
+		print(item.item_name)
+	item_array = [
 				{
 					'name': 'margarita mix', 
 					'price': 5.00
@@ -92,4 +111,4 @@ def account():
 					'price': 0.00
 				} 
 			]
-	return render_template('account.html', title="Account", items=items, user=current_user, search=search)
+	return render_template('account.html', title="Account", items=item_array, user=current_user, search=search)

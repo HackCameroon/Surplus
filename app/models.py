@@ -21,12 +21,13 @@ class seller(UserMixin, db.Model):
     seller_phone = db.Column(db.Integer)
     seller_address = db.Column(db.String)
     password_hash = db.Column(db.String(128))
-    def __init__(self, seller_email, seller_name, seller_zipcode, seller_phone, seller_address):
-        self.seller_email = seller_email
-        self.seller_name = seller_name
-        self.seller_zipcode = seller_zipcode
-        self.seller_phone = seller_phone
-        self.seller_address = seller_address
+    items = db.relationship('Inventory', backref='seller')
+    #def __init__(self, seller_email, seller_name, seller_zipcode, seller_phone, seller_address):
+        #self.seller_email = seller_email
+        #self.seller_name = seller_name
+        #self.seller_zipcode = seller_zipcode
+        #self.seller_phone = seller_phone
+        #self.seller_address = seller_address
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -42,11 +43,10 @@ class Inventory(db.Model):
     item_quantity = db.Column(db.Integer)
     item_image = db.Column(db.String)
     item_description = db.Column(db.String)
-    def __init__(self, item_id, seller_id, item_name, item_price, item_quantity, item_image, item_description):
-        self.item_id = item_id
-        self.seller_id = seller_id
-        self.item_name = item_name
-        self.item_price = item_price
-        self.item_quantity = item_quantity
-        self.item_image = item_image
-        self.item_description = item_description
+    #def __init__(self, seller_id, item_name, item_price, item_quantity, item_image, item_description):
+        #self.seller_id = seller_id
+        #self.item_name = item_name
+        #self.item_price = item_price
+        #self.item_quantity = item_quantity
+        #self.item_image = item_image
+        #self.item_description = item_description
