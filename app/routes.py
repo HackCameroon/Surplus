@@ -76,8 +76,6 @@ def additem():
 
 
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-
-
 	
 	if form.validate_on_submit():
 			itemname = form.itemname.data
@@ -94,7 +92,7 @@ def additem():
 			db.session.commit()
 			#return redirect('/account')
 			#return render_template('account.html',data=Inventory.query.all(), user=current_user)
-			return render_template('account.html', title="WHAT", items=items, user=current_user, search=search)
+			return redirect(url_for('account'))
 
 			
 	return render_template('add.html', title="Add", form=form, search=search, user=current_user)
@@ -111,21 +109,6 @@ def account():
 	## Code to add an item to a seller's inventory
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
 	name = "my cool dinner"
-	item = Inventory(item_name=name, item_price='$10.00', item_quantity = 1, item_image = "image.jpg", item_description = "yummy", seller=current_user)
-	
-
-	#i think somehting like this is easier but for some reason when i refresh it errors
-
-	# if(Inventory.query.filter(Inventory.item_name == name).count() >= 1):
-	# 	print("DUPLICATE")
-	# 	print("count equals", Inventory.query.filter(Inventory.item_name == name).count())
-	# else:
-	# 	db.session.add(item)
-	# 	db.session.commit()
-	
-	db.session.add(item)
-	db.session.commit()
-	
 	##
 
 
@@ -133,37 +116,23 @@ def account():
 	duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
 	## need to do the quantity thing
 	for result in duplicate_results:
-<<<<<<< HEAD
-		print (result.item_name, result.item_id)
-	##
-||||||| merged common ancestors
-		print (result.item_name, result.item_id)
-=======
-		#print (result.item_name, result.item_id)
 		pass
->>>>>>> 231fb9865756ca3ef10a9928a7f8dd1644a6a374
 
-	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-	item_array = []
+
+
+
+	results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
+	items_array = []
 	items = current_user.items
-	for item in items:
-<<<<<<< HEAD
-		#temp = {
-				#	'name': item.item_name,
-				#	'price': item.item_price,
-				#	'quantity': item.item_quantity
-				#}
-		#item_array_one.add(temp)
-		print(item.item_name)
-||||||| merged common ancestors
-		print(item.item_name)
-=======
-		print("******************")
-		print(item.item_quantity)
+	for item in results:
+		item = {
+				'name': item.item_name,
+				'price': item.item_price,
+				'quantity': item.item_quantity,
+				'description': item.item_description
+		}
+		items_array.append(item)
 
-	
-	
->>>>>>> 231fb9865756ca3ef10a9928a7f8dd1644a6a374
 	item_array = [
 				{
 					'name': 'margarita mix', 
@@ -190,4 +159,4 @@ def account():
 					'description': "testdescription"
 				} 
 			]
-	return render_template('account.html', title="Account", items=item_array, user=current_user, search=search)
+	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
