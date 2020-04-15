@@ -1,11 +1,8 @@
-
 from flask import request, render_template, flash, redirect, url_for, make_response, session
 from flask import current_app as app
 from app.forms import LoginForm, SearchForm, SignupForm
 from app.models import db, seller, Inventory
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
 
 db.create_all()
 
@@ -83,7 +80,7 @@ def account():
 	##
 
 	##get duplicate results so we can add to quantity instead of adding another exact item
-	duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
+	#duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
 	##
 
 	for result in duplicate_results:
@@ -112,3 +109,14 @@ def account():
 				} 
 			]
 	return render_template('account.html', title="Account", items=item_array, user=current_user, search=search)
+
+@app.route('/Search')
+def search_page():
+	search = SearchForm()
+	zipcode_search = session.query(seller).filter(seller.seller_zipcode).all()
+	for seller in zipcode_search:
+		seller_array = []
+		seller_array.append(seller)
+		print(seller)
+	return render_template('search_page.html', title="Search", items=seller_array, user=zipcode_search, search=search)
+
