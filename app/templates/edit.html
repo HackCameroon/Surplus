@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+	
+	<div class="row justify-content-center">
+		<div class = "col-md-3">
+		</div>
+		<div class = "col-md-6">
+			<div class="container form-container" id="signup_form_container">
+				<h1 class="display-4">Edit Your Item</h1>
+				<form action="" method="post" novalidate >
+					{{ form.hidden_tag() }}
+					<div class="form-group input-field">
+                        {{ form.itemname.label }}
+                        {{data}}
+						{{ form.itemname(size=32, class_="form-control", value = "hi" ) }}
+					</div>
+					<div class="form-group input-field">
+                        {{ form.itemquantity.label }}
+						{{ form.itemquantity(size=32, class_="form-control") }}
+					</div>
+					<div class="form-group input-field">
+						{{ form.itemprice.label }}
+						{{ form.itemprice(size=32, class="form-control") }}
+					</div>
+					<div class="form-group input-field">
+						{{ form.itemdescription.label }}
+						{{ form.itemdescription(size=200, class="form-control") }}
+					</div>
+					<div class="submit-container"> 
+						{{ form.submit(class_="btn btn-secondary btn-lg") }}
+                    </div>
+                    
+                    <!-- for the photo when we get there -->
+                    <!-- <div class="submit-container"> 
+						{{ form.submit(class_="btn btn-secondary btn-lg") }}
+					</div> -->
+				</form>
+			</div>
+		</div>
+		<div class = "col-md-3">
+		</div>
+	</div>
+{% endblock %}
+

@@ -20,9 +20,10 @@
 				<tr>
 					<td>{{item.name}}</td>
 					<td>${{'%0.2f'|format(item.price|float)}}</td>
-					<td>{{(item.quantity)}}</td>
-					<td>{{(item.description)}}</td>
+					<td>${{(item.quantity)}}</td>
+					<td>${{(item.description)}}</td>
 					<td><button class="btn my-2 my-sm-0 btn-dark float-right px-5">Edit</button></td>
+
 				</tr>
 				{% endfor %}
 			</table>

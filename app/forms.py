@@ -34,3 +34,11 @@ class AddItemForm(FlaskForm):
 	#itempicture = do this later
 	itemdescription = StringField('Description', validators=[DataRequired()])
 	submit = SubmitField('Add')
+
+class EditItemForm(FlaskForm):
+	itemname = StringField('Item Name', validators=[DataRequired()])
+	itemquantity = IntegerField('Quantity', validators=[DataRequired()])
+	itemprice = FloatField("Price", validators=[DataRequired()])
+	#itempicture = do this later
+	itemdescription = StringField('Description', validators=[DataRequired()])
+	submit = SubmitField('Update Item')

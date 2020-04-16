@@ -1,6 +1,6 @@
 from flask import request, render_template, flash, redirect, url_for, make_response, session
 from flask import current_app as app
-from app.forms import LoginForm, SearchForm, SignupForm, AddItemForm
+from app.forms import LoginForm, SearchForm, SignupForm, AddItemForm, EditItemForm
 from app.models import db, seller, Inventory
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -67,6 +67,33 @@ def logout():
 	session.clear()
 	return redirect(url_for('index'))
 
+@app.route('/edit', methods=['GET','POST'])
+def edititem():
+	form = EditItemForm()
+	search = SearchForm()
+
+
+	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+	
+	
+	item = Inventory()
+	itemname = form.itemname.data
+	itemquantity = form.itemquantity.data
+	itemprice = form.itemprice.data
+	itemdescription = form.itemdescription.data
+	# d = []
+	# d = [itemname, itemquantity,itemprice, itemdescription]
+	# print("*******",d)
+
+	if form.validate_on_submit():
+
+			item = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
+			db.session.add(item)
+			db.session.commit()
+			return redirect(url_for('account'))
+			
+	return render_template('edit.html', title="Add", form=form, search=search, user=current_user,)
+
 @app.route('/add', methods=['GET','POST'])
 def additem():
 	form = AddItemForm()
@@ -82,16 +109,10 @@ def additem():
 			itemdescription = form.itemdescription.data
 
 			item = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
-			item2 = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
-		
-			items = [item, item2]
-			
+					
 			db.session.add(item)
 			db.session.commit()
-			#return redirect('/account')
-			#return render_template('account.html',data=Inventory.query.all(), user=current_user)
 			return redirect(url_for('account'))
-
 			
 	return render_template('add.html', title="Add", form=form, search=search, user=current_user)
 
