@@ -130,33 +130,7 @@ def account():
 				'description': item.item_description
 		}
 		items_array.append(item)
-
-	item_array = [
-				{
-					'name': 'margarita mix', 
-					'price': 5.00,
-					'quantity': 3,
-					'description': "testdescription"
-				},
-				{
-					'name': 'chicken soup',
-					'price': 2.00,
-					'quantity': 3,
-					'description': "testdescription" 
-				}, 
-				{
-					'name': 'beans',
-					'price': 16.00,
-					'quantity': 3,
-					'description': "testdescription"
-				}, 
-				{
-					'name': 'that one hot waiter',
-					'price': 0.00,
-					'quantity': 3,
-					'description': "testdescription"
-				} 
-			]
+		
 	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
 
 @app.route('/Search')
