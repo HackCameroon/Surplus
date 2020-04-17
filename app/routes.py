@@ -67,32 +67,35 @@ def logout():
 	session.clear()
 	return redirect(url_for('index'))
 
-@app.route('/edit', methods=['GET','POST'])
-def edititem():
+@app.route('/edit/<iD>', methods=['GET','POST'])
+def edititem(iD):
 	form = EditItemForm()
 	search = SearchForm()
 
 
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+
+	current_item = Inventory.query.filter_by(item_id = iD).first();
+
+	item = {
+			'name': current_item.item_name,
+			'quantity':  current_item.item_quantity,
+			'price':  current_item.item_price,
+			'description': current_item.item_description
+		}
 	
-	
-	item = Inventory()
-	itemname = form.itemname.data
-	itemquantity = form.itemquantity.data
-	itemprice = form.itemprice.data
-	itemdescription = form.itemdescription.data
-	# d = []
-	# d = [itemname, itemquantity,itemprice, itemdescription]
-	# print("*******",d)
+
 
 	if form.validate_on_submit():
 
-			item = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
-			db.session.add(item)
+			current_item.item_name = form.itemname.data
+			current_item.item_quantity = form.itemquantity.data
+			current_item.item_price = form.itemprice.data
+			current_item.item_description = form.itemdescription.data
 			db.session.commit()
 			return redirect(url_for('account'))
 			
-	return render_template('edit.html', title="Add", form=form, search=search, user=current_user,)
+	return render_template('edit.html', title="Add", form=form, search=search, user=current_user, item=item)
 
 @app.route('/add', methods=['GET','POST'])
 def additem():
@@ -117,7 +120,7 @@ def additem():
 	return render_template('add.html', title="Add", form=form, search=search, user=current_user)
 
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 def account():
 
 
@@ -145,6 +148,7 @@ def account():
 	items = current_user.items
 	for item in results:
 		item = {
+				'id' : item.item_id,
 				'name': item.item_name,
 				'price': item.item_price,
 				'quantity': item.item_quantity,
@@ -152,32 +156,6 @@ def account():
 		}
 		items_array.append(item)
 
-	item_array = [
-				{
-					'name': 'margarita mix', 
-					'price': 5.00,
-					'quantity': 3,
-					'description': "testdescription"
-				},
-				{
-					'name': 'chicken soup',
-					'price': 2.00,
-					'quantity': 3,
-					'description': "testdescription" 
-				}, 
-				{
-					'name': 'beans',
-					'price': 16.00,
-					'quantity': 3,
-					'description': "testdescription"
-				}, 
-				{
-					'name': 'that one hot waiter',
-					'price': 0.00,
-					'quantity': 3,
-					'description': "testdescription"
-				} 
-			]
 	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
 
 @app.route('/Search')

@@ -13,19 +13,19 @@
 					<div class="form-group input-field">
                         {{ form.itemname.label }}
                         {{data}}
-						{{ form.itemname(size=32, class_="form-control", value = "hi" ) }}
+						{{ form.itemname(size=32, class_="form-control", value = item.name ) }}
 					</div>
 					<div class="form-group input-field">
                         {{ form.itemquantity.label }}
-						{{ form.itemquantity(size=32, class_="form-control") }}
+						{{ form.itemquantity(size=32, class_="form-control", value = item.quantity) }}
 					</div>
 					<div class="form-group input-field">
 						{{ form.itemprice.label }}
-						{{ form.itemprice(size=32, class="form-control") }}
+						{{ form.itemprice(size=32, class="form-control", value = item.price) }}
 					</div>
 					<div class="form-group input-field">
 						{{ form.itemdescription.label }}
-						{{ form.itemdescription(size=200, class="form-control") }}
+						{{ form.itemdescription(size=200, class="form-control", value = item.description) }}
 					</div>
 					<div class="submit-container"> 
 						{{ form.submit(class_="btn btn-secondary btn-lg") }}
