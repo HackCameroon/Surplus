@@ -136,9 +136,9 @@ def account():
 @app.route('/Search')
 def search_page():
 	search = SearchForm()
-	zipcode_search = session.query(seller).filter(seller.seller_zipcode).all()
+	zipcode_search = seller.query.join(seller).filter(seller.seller_zipcode).all()
 	for seller in zipcode_search:
 		seller_array = []
 		seller_array.append(seller)
-		print(seller)
-	return render_template('search_page.html', title="Search", items=seller_array, user=zipcode_search, search=search)
+		results = seller_array
+	return render_template('#puthere', title="Search", data=results, items=seller_array, user=zipcode_search, search=search)
