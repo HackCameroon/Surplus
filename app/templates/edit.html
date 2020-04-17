@@ -21,7 +21,7 @@
 					</div>
 					<div class="form-group input-field">
 						{{ form.itemprice.label }}
-						{{ form.itemprice(size=32, class="form-control", value = item.price) }}
+						{{ form.itemprice(size=32, class="form-control", value = '%0.2f'|format(item.price|float)) }}
 					</div>
 					<div class="form-group input-field">
 						{{ form.itemdescription.label }}

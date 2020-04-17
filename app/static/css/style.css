@@ -126,3 +126,13 @@ input:checked + .slider:before {
   width: 66%;
   margin-left: 40%;
 }
+
+.item-price-div {
+  display: block;
+  right: 0;
+  top: 0;
+}
+
+.price-header {
+  right: 0;
+}
