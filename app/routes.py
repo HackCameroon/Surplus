@@ -190,6 +190,6 @@ def search_page():
 		print(seller)
 	return render_template('search_page.html', title="Search", items=seller_array, user=zipcode_search, search=search)
 
-@app.route('sellerpage')
-def seller_page():
-	search = SearchForm()
+# @app.route('sellerpage')
+# def seller_page():
+# 	search = SearchForm()
