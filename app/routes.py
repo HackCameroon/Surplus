@@ -189,3 +189,7 @@ def search_page():
 		seller_array.append(seller)
 		print(seller)
 	return render_template('search_page.html', title="Search", items=seller_array, user=zipcode_search, search=search)
+
+@app.route('sellerpage')
+def seller_page():
+	search = SearchForm()
