@@ -5,13 +5,6 @@
 	<div class="row justify-content-center">
 		<div class="col-md-3">
 		</div>
-		{% if session.get('logged_in') == True %}
-		<div class="col-md-6">
-			<div id="Welcome" class="jumbotron jumbotron-fluid p-3 my-5">
-				<h1 class="display-2">Welcome</h1>
-			</div>
-		</div>
-		{%else%}
 		<div class="col-md-3">
 		</div>
 	</div>
@@ -94,15 +87,4 @@
 		</div>
 
 	</div>
-
-	<div class="row justify-content-center">
-		<div class="col-md-3">
-		</div>
-		<div class="col-md-6">
-			<button type="button" class="btn btn-lg btn-secondary btn-block mb-5">Restaurant? Sign up Here</button>
-		</div>
-		<div class="col-md-3">
-		</div>
-	</div>
-	{% endif %}
 {% endblock %}
