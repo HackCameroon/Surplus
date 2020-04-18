@@ -17,6 +17,8 @@ To run this applciation:
 	
 Run the application from the main directory (Surplus) in the command line:
 	flask run
+
+Search by complete zipcode or by keywords for restaurant or item title.
 	
 Access the application:
 	http://localhost:5000/ or http://127.0.0.1:5000/
