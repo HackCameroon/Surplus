@@ -5,13 +5,28 @@
     --light-brown: #ab7551;
     --dark-red: #783433;
     --tomato: #ff6347;
-
+    --blanched-almond: #FFEBCD;
     --text-size: 18px;
 }
 
 
 #index-body{
+<<<<<<< HEAD
   
+||||||| merged common ancestors
+  background-color: #C0D9AF !important;
+=======
+<<<<<<< HEAD
+
+  /*background-color: #FFEBCD;8?
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+=======
+  background-color: #C0D9AF !important;
+>>>>>>> 9cac1538d451df450e71709475d7957794a5e96c
+>>>>>>> bf476e1b699e69fd76dd7548b218b49df8c7c4ab
 }
 
 #SearchButton {
@@ -38,30 +53,6 @@
   height: 0;
 }
 
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
 
 input:checked + .slider {
   background-color: #2196F3;
@@ -76,6 +67,28 @@ input:checked + .slider:before {
   -ms-transform: translateX(18px);
   transform: translateX(18px);
 }
+
+/* nav bar */
+
+.navbar-nav > li{
+  padding-left:20px;
+  padding-right:20px;
+}
+
+.navbar {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+/* graphic 
+.bg-image {
+  background-image: url('../static/graphic.png');
+  background-size: cover;
+  background-position: center;
+}*/
+
+
+
 
 /* Rounded sliders */
 .slider.round {
