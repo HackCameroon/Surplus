@@ -19,16 +19,21 @@ def index():
 		user = {"username": "Customer!"}
 
 	if request.method == 'POST' and search.validate_on_submit():
-		return redirect((url_for('search_page', query=search.searchParam.data)))
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 
 	return render_template('index.html', title="Home", user=user, search=search)
 
 #sally is the best friend EVER
 @app.route('/login', methods=['GET','POST'])
 def login():
+
 	search = SearchForm()
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
 	if session.get('logged_in') == True:
 		return redirect(url_for('index'))
+		
 	form = LoginForm()
 	if form.validate_on_submit():
 
@@ -43,9 +48,14 @@ def login():
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
+
 	search = SearchForm()
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
 	if session.get('logged_in') == True:
 		return redirect(url_for('index'))
+
 	form = SignupForm()
 	if form.validate_on_submit():
 			name = form.restaurant_name.data
@@ -78,6 +88,8 @@ def edititem(iD):
 
 		form = EditItemForm()
 		search = SearchForm()
+		if request.method == 'POST' and search.validate_on_submit():
+			return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 
 
 		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
@@ -114,6 +126,8 @@ def additem():
 
 		form = AddItemForm()
 		search = SearchForm()
+		if request.method == 'POST' and search.validate_on_submit():
+			return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 
 
 		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
@@ -145,9 +159,10 @@ def additem():
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():
-
 	if (session.get('logged_in')):
 		search = SearchForm()
+		if request.method == 'POST' and search.validate_on_submit():
+			return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 
 		## Code to add an item to a seller's inventory
 		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
@@ -180,25 +195,33 @@ def account():
 
 	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
 
-@app.route('/search_page/<query>', methods=['GET', 'POST'])
-def search_page(query):
+@app.route('/search_page/<searchQuery>', methods=['GET', 'POST'])
+def search_page(searchQuery):
 	search = SearchForm()
+
+	#formattedQuery = "%{}%".format(searchQuery)
+
+	search_results = seller.query.filter_by(seller_name = searchQuery).all()
 
 	if request.method == 'POST' and search.validate_on_submit():
-		return redirect((url_for('search_page', query=search.searchParam.data)))
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 
-	return render_template('search_page.html', title="Search", search=search, searchTerm=query)
+	return render_template('search_page.html', title="Search", search=search, search_results=search_results)
 
-@app.route('/sellerpage')
+@app.route('/sellerpage', methods=['GET', 'POST'])
 def seller_page():
 	search = SearchForm()
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
 	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
 	return render_template('sellerpage.html', seller=current_user, items=seller_items, search=search)
 
-@app.route('/addToCart')
+@app.route('/addToCart', methods=['GET', 'POST'])
 def addToCart():
 	search = SearchForm()
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
 	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
 
