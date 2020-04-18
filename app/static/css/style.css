@@ -127,12 +127,12 @@ input:checked + .slider:before {
   margin-left: 40%;
 }
 
-.item-price-div {
-  display: block;
-  right: 0;
-  top: 0;
-}
-
 .price-header {
   right: 0;
+}
+
+.add-to-cart {
+  position: fixed;
+  font-size: 67px;
+  margin-left: 300px;
 }

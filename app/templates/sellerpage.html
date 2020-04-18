@@ -14,15 +14,16 @@
 				{% for item in items %}
 				<tr>
 					<td>
-						<h2>{{item.item_name}}</h2><br/>
-						<h2><small>{{(item.item_description)}}</small></h2>
+						<h2>{{item.item_name}}</h2>
+						<h3><small>{{(item.item_description)}}</small></h3><br/>
+						<h2 ><small>${{'%0.2f'|format(item.item_price|float)}}<small></h2>
 						
 					</td>
 					<td>
-						<div class="item-price-div float-right my-2 my-sm-0">
-							<h2 class = "price-header">${{'%0.2f'|format(item.item_price|float)}}</h2>
-							<br/>
-							<a href= "{{url_for('addToCart', iD = item.id)}}"><button class="btn btn-dark add-to-cart">Add To Cart</button></a>
+						
+						<div class = "float-right container-fluid">
+							<img src = "{{url_for('static', filename='download.jpg')}}">
+							<a href= "{{url_for('addToCart', iD = item.id)}}" style="top: 10%" class="float-right"><button class="btn btn-success" style="font-size: 30px"><i class="fa fa-cart-plus" style = "font-size: 30px"></i></button></a>
 						</div>
 					</td>
 
