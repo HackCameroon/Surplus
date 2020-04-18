@@ -1,6 +1,6 @@
 from flask import request, render_template, flash, redirect, url_for, make_response, session
 from flask import current_app as app
-from app.forms import LoginForm, SearchForm, SignupForm, AddItemForm
+from app.forms import LoginForm, SearchForm, SignupForm, AddItemForm, EditItemForm
 from app.models import db, seller, Inventory
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -67,58 +67,114 @@ def logout():
 	session.clear()
 	return redirect(url_for('index'))
 
+@app.route('/edit/<iD>', methods=['GET','POST'])
+def edititem(iD):
+
+	if (session.get('logged_in')):
+
+		form = EditItemForm()
+		search = SearchForm()
+
+
+		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+
+		current_item = Inventory.query.filter_by(item_id = iD).first();
+
+		item = {
+				'name': current_item.item_name,
+				'quantity':  current_item.item_quantity,
+				'price':  current_item.item_price,
+				'description': current_item.item_description
+			}
+		
+
+
+		if form.validate_on_submit():
+
+				current_item.item_name = form.itemname.data
+				current_item.item_quantity = form.itemquantity.data
+				current_item.item_price = form.itemprice.data
+				current_item.item_description = form.itemdescription.data
+				db.session.commit()
+				return redirect(url_for('account'))
+				
+	else:
+		return redirect(url_for('index'))
+			
+	return render_template('edit.html', title="Add", form=form, search=search, user=current_user, item=item)
+
 @app.route('/add', methods=['GET','POST'])
 def additem():
-	form = AddItemForm()
-	search = SearchForm()
+
+	if (session.get('logged_in')):
+
+		form = AddItemForm()
+		search = SearchForm()
 
 
-	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-	
-	if form.validate_on_submit():
-			itemname = form.itemname.data
-			itemquantity = form.itemquantity.data
-			itemprice = form.itemprice.data
-			itemdescription = form.itemdescription.data
-
-			item = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
-			item2 = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
+		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
 		
-			items = [item, item2]
-			
-			db.session.add(item)
-			db.session.commit()
-			#return redirect('/account')
-			#return render_template('account.html',data=Inventory.query.all(), user=current_user)
-			return redirect(url_for('account'))
+		if form.validate_on_submit():
 
+				item = Inventory.query.filter_by(item_name=form.itemname.data).first()
+				if (item):
+					print("duplicate item error")
+					return redirect(url_for('account'))
+				else:
+					itemname = form.itemname.data
+					itemquantity = form.itemquantity.data
+					itemprice = form.itemprice.data
+					itemdescription = form.itemdescription.data
+
+					item = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
+
+
+							
+					db.session.add(item)
+					db.session.commit()
+					return redirect(url_for('account'))
+	else:
+		return redirect(url_for('index'))
 			
 	return render_template('add.html', title="Add", form=form, search=search, user=current_user)
 
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 def account():
 
+	if (session.get('logged_in')):
+		search = SearchForm()
+
+		## Code to add an item to a seller's inventory
+		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+		name = "my cool dinner"
+		##
 
 
-
-	search = SearchForm()
-
-	## Code to add an item to a seller's inventory
-	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-	name = "my cool dinner"
-	##
-
-
-	##get duplicate results so we can add to quantity instead of adding another exact item
-	duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
-	## need to do the quantity thing
-	for result in duplicate_results:
-		pass
+		##get duplicate results so we can add to quantity instead of adding another exact item
+		duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
+		## need to do the quantity thing
+		for result in duplicate_results:
+			pass
 
 
 
 
+		results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
+		items_array = []
+		for item in results:
+			item = {
+					'id' : item.item_id,
+					'name': item.item_name,
+					'price': item.item_price,
+					'quantity': item.item_quantity,
+					'description': item.item_description
+			}
+			items_array.append(item)
+	else:
+		return redirect(url_for('index'))
+
+<<<<<<< HEAD
 	results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
 	items_array = []
 	items = current_user.items
@@ -131,6 +187,45 @@ def account():
 		}
 		items_array.append(item)
 		
+||||||| merged common ancestors
+	results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
+	items_array = []
+	items = current_user.items
+	for item in results:
+		item = {
+				'name': item.item_name,
+				'price': item.item_price,
+				'quantity': item.item_quantity,
+				'description': item.item_description
+		}
+		items_array.append(item)
+
+	item_array = [
+				{
+					'name': 'margarita mix', 
+					'price': 5.00,
+					'quantity': 3,
+					'description': "testdescription"
+				},
+				{
+					'name': 'chicken soup',
+					'price': 2.00,
+					'quantity': 3,
+					'description': "testdescription" 
+				}, 
+				{
+					'name': 'beans',
+					'price': 16.00,
+					'quantity': 3,
+					'description': "testdescription"
+				}, 
+				{
+					'name': 'that one hot waiter',
+					'price': 0.00,
+					'quantity': 3,
+					'description': "testdescription"
+				} 
+			]
 	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
 
 @app.route('/Search')
@@ -139,6 +234,27 @@ def search_page():
 	zipcode_search = seller.query.join(seller).filter(seller.seller_zipcode).all()
 	for seller in zipcode_search:
 		seller_array = []
-		seller_array.append(seller)
-		results = seller_array
-	return render_template('#puthere', title="Search", data=results, items=seller_array, user=zipcode_search, search=search)
+		results = seller_arrays
+		print(seller)
+	return render_template('search_page.html', title="Search", items=seller_array, user=zipcode_search, search=search)
+
+@app.route('/sellerpage')
+def seller_page():
+
+	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
+
+
+
+	return render_template('sellerpage.html', seller=current_user, items=seller_items)
+
+@app.route('/addToCart')
+def addToCart():
+
+	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
+
+
+
+	return render_template('sellerpage.html', seller=current_user, items=seller_items)
+>>>>>>> adding
