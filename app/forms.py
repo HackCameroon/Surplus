@@ -10,7 +10,7 @@ class LoginForm(FlaskForm):
 
 class SearchForm(FlaskForm):
 	searchParam = StringField(validators=[DataRequired()], description='Search Restaurants')
-	zipcode = IntegerField(default = 0, description='e.g. 90007')
+	submit = SubmitField('Search')
 
 class SignupForm(FlaskForm):
 	restaurant_email = StringField('Email', validators=[DataRequired()])

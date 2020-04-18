@@ -174,78 +174,24 @@ def account():
 	else:
 		return redirect(url_for('index'))
 
-<<<<<<< HEAD
-	results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
-	items_array = []
-	items = current_user.items
-	for item in results:
-		item = {
-				'name': item.item_name,
-				'price': item.item_price,
-				'quantity': item.item_quantity,
-				'description': item.item_description
-		}
-		items_array.append(item)
-		
-||||||| merged common ancestors
-	results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
-	items_array = []
-	items = current_user.items
-	for item in results:
-		item = {
-				'name': item.item_name,
-				'price': item.item_price,
-				'quantity': item.item_quantity,
-				'description': item.item_description
-		}
-		items_array.append(item)
-
-	item_array = [
-				{
-					'name': 'margarita mix', 
-					'price': 5.00,
-					'quantity': 3,
-					'description': "testdescription"
-				},
-				{
-					'name': 'chicken soup',
-					'price': 2.00,
-					'quantity': 3,
-					'description': "testdescription" 
-				}, 
-				{
-					'name': 'beans',
-					'price': 16.00,
-					'quantity': 3,
-					'description': "testdescription"
-				}, 
-				{
-					'name': 'that one hot waiter',
-					'price': 0.00,
-					'quantity': 3,
-					'description': "testdescription"
-				} 
-			]
 	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
 
 @app.route('/Search')
 def search_page():
 	search = SearchForm()
-	zipcode_search = seller.query.join(seller).filter(seller.seller_zipcode).all()
-	for seller in zipcode_search:
-		seller_array = []
-		results = seller_arrays
-		print(seller)
-	return render_template('search_page.html', title="Search", items=seller_array, user=zipcode_search, search=search)
+
+	#zipcode_search = seller.query.join(seller).filter(seller.seller_zipcode).all()
+	#for seller in zipcode_search:
+		#seller_array = []
+		#results = seller_arrays
+		#print(seller)
+	return render_template('search_page.html', title="Search", items=seller_array, search=search)
 
 @app.route('/sellerpage')
 def seller_page():
 
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
 	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
-
-
-
 	return render_template('sellerpage.html', seller=current_user, items=seller_items)
 
 @app.route('/addToCart')
