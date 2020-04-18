@@ -33,7 +33,7 @@ def login():
 
 	if session.get('logged_in') == True:
 		return redirect(url_for('index'))
-		
+
 	form = LoginForm()
 	if form.validate_on_submit():
 
@@ -177,8 +177,6 @@ def account():
 			pass
 
 
-
-
 		results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
 		items_array = []
 		for item in results:
@@ -199,23 +197,28 @@ def account():
 def search_page(searchQuery):
 	search = SearchForm()
 
-	#formattedQuery = "%{}%".format(searchQuery)
-
-	search_results = seller.query.filter_by(seller_name = searchQuery).all()
+	if searchQuery == 'browse':
+		search_results = seller.query.all()
+	else: 
+		search_results = seller.query.filter_by(seller_name = searchQuery).all()
 
 	if request.method == 'POST' and search.validate_on_submit():
 		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 
 	return render_template('search_page.html', title="Search", search=search, search_results=search_results)
 
-@app.route('/sellerpage', methods=['GET', 'POST'])
-def seller_page():
+@app.route('/sellerpage/<iD>', methods=['GET', 'POST'])
+def seller_page(iD):
+
 	search = SearchForm()
 	if request.method == 'POST' and search.validate_on_submit():
 		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
-	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
-	return render_template('sellerpage.html', seller=current_user, items=seller_items, search=search)
+
+	searchSeller = seller.query.filter_by(seller_id = iD).first()
+
+	seller_items = Inventory.query.join(seller).filter(seller.seller_id == iD).all()
+
+	return render_template('sellerpage.html', seller=searchSeller, items=seller_items, search=search)
 
 @app.route('/addToCart', methods=['GET', 'POST'])
 def addToCart():
@@ -228,3 +231,8 @@ def addToCart():
 
 
 	return render_template('sellerpage.html', seller=current_user, items=seller_items, search=search)
+
+@app.route('/error')
+def error():
+	search = searchForm()
+	return render_template('errorpage.html', search=search)
