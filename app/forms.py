@@ -8,10 +8,6 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
-class SearchForm(FlaskForm):
-	searchParam = StringField(validators=[DataRequired()], description='Search Restaurants')
-	submit = SubmitField('Search')
-
 class SignupForm(FlaskForm):
 	restaurant_email = StringField('Email', validators=[DataRequired()])
 	restaurant_password = PasswordField('Password', validators=[
@@ -42,3 +38,7 @@ class EditItemForm(FlaskForm):
 	#itempicture = do this later
 	itemdescription = StringField('Description', validators=[DataRequired()])
 	submit = SubmitField('Update Item')
+
+class SearchForm(FlaskForm):
+	searchParam = StringField('search', [DataRequired()])
+	submit = SubmitField('Search', render_kw={'class': 'btn btn-success btn-block'})

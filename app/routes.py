@@ -6,17 +6,27 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db.create_all()
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
 	search = SearchForm()
+
 	if session.get('logged_in') == True:
 		user_id = session.get('user_id')
 		name = seller.query.filter_by(seller_id=user_id).first().seller_name
 		user = {"username": name}
 	else:
 		user = {"username": "Customer!"}
-	return render_template('index.html', title="Home", user=user)
+
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', query=search.searchParam.data)))
+		#searchThing = search.searchParam.data
+		#print(searchThing)
+		#redirect(url_for('search_page', searchTerm=searchThing))
+	#else:
+		#print("not validating")
+
+	return render_template('index.html', title="Home", user=user, search=search)
 
 #sally is the best friend EVER
 @app.route('/login', methods=['GET','POST'])
@@ -69,7 +79,6 @@ def logout():
 
 @app.route('/edit/<iD>', methods=['GET','POST'])
 def edititem(iD):
-
 	if (session.get('logged_in')):
 
 		form = EditItemForm()
@@ -176,8 +185,8 @@ def account():
 
 	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
 
-@app.route('/Search')
-def search_page():
+@app.route('/search_page/<query>')
+def search_page(query):
 	search = SearchForm()
 
 	#zipcode_search = seller.query.join(seller).filter(seller.seller_zipcode).all()
@@ -185,21 +194,21 @@ def search_page():
 		#seller_array = []
 		#results = seller_arrays
 		#print(seller)
-	return render_template('search_page.html', title="Search", items=seller_array, search=search)
+	return render_template('search_page.html', title="Search", search=search, searchTerm=query)
 
 @app.route('/sellerpage')
 def seller_page():
-
+	search = SearchForm()
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
 	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
-	return render_template('sellerpage.html', seller=current_user, items=seller_items)
+	return render_template('sellerpage.html', seller=current_user, items=seller_items, search=search)
 
 @app.route('/addToCart')
 def addToCart():
-
+	search = SearchForm()
 	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
 	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
 
 
 
-	return render_template('sellerpage.html', seller=current_user, items=seller_items)
+	return render_template('sellerpage.html', seller=current_user, items=seller_items, search=search)
