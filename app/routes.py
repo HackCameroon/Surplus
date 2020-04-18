@@ -243,3 +243,10 @@ def addToCart():
 def error():
 	search = searchForm()
 	return render_template('errorpage.html', search=search)
+
+@app.route('/remove/<iD>')
+def deleteItem(iD):
+	item_to_delete = Inventory.query.filter_by(item_id=iD).first()
+	db.session.delete(item_to_delete)
+	db.session.commit()
+	return redirect(url_for('account'))
