@@ -11,7 +11,7 @@
 
 
 #index-body{
-  background-image: url("light-tan.png")
+  background-image: url("light-tan.png") !important;
   background-color: #cccc;
   background-position: center;
   background-repeat: no-repeat;

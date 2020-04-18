@@ -12,13 +12,9 @@
 					{{result.seller_name}}
 					{{result.item_name}}
 				</h1>
+				<a href= "{{url_for('seller_page', iD = result.seller_id)}}"><button class="btn my-2 my-sm-0 btn-dark float-right px-5">See More</button></a>
 			</div>
 			{% endfor %}
-			{% if search_results == None %}
-			<div>
-				<h2> Sorry, no results matched your search. </h2>
-			</div>
-			{% endif %}
 		</div>
 		<div class="col-md-3">
 		</div>
