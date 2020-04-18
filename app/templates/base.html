@@ -13,9 +13,8 @@
       <div class="row">
         <div class="col">
 
-          <nav class="navbar navbar-expand-lg navbar-light bg-light nav-fill w-100">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light nav-fill w-100"> <hr/>
              <div class="container-fluid">
-
                 <a class="navbar-brand" href="{{url_for('index')}}">
                   <img src="/static/css/logo.jpg" width="85px" height="35px" class="d-inline-block align-top" alt="">
                 </a>
@@ -42,8 +41,21 @@
                   {{search.searchParam(size=32, class_="form-control")}}
                   {{search.submit()}}
                 </form>
-                
-                <a href= "{{url_for('search_page', searchQuery='browse')}}"><button class="btn my-2 my-sm-0 btn-dark float-right px-5"> Browse </button></a>
+
+                <!--<ul class="navbar-nav mr-auto">
+                  <li class="nav-item">
+                  <div class="col-12 col-md-3">-->
+                      <!--grab the search results here and send to serlvet-->
+                       <!--<button type="submit" class="btn btn-lg btn-dark text-uppercase font-weight-bold mb-2">Search</button>
+                     </div>
+                </li>
+              </ul>-->
+
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item">
+                    <a href= "{{url_for('search_page', searchQuery='browse')}}"><button class="btn my-2 my-sm-0 btn-dark float-right px-5"> Browse </button></a>
+                  </li>
+                </ul>
 
                 {% if session.get('logged_in') == True %}
                   <a href="/logout" class="btn my-2 my-sm-0">Log Out</a>
@@ -59,6 +71,7 @@
                     <a href="/signup" class="btn my-2 my-sm-0 font-weight-bold bg-success text-white">Sign Up</a>
                   </li>
                 </ul>
+                
                 {% endif %}
 <!--                 <button class = "btn my-2 my-sm-0" type="submit">Sign Up</button>         -->        
 <!--                 <div>
@@ -66,9 +79,11 @@
                 </div> -->
 
               </div>  
+              <br/>
           </nav>
 
         </div>
+        <br/>
       </div>
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -79,8 +94,8 @@
           </ul>
         {% endif %}
       {% endwith %}
-
-        <hr>
+        <br/>
+        <br/>
         {% block content %}{% endblock %}
     </div>
     </body>
