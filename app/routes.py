@@ -73,6 +73,8 @@ def signup():
 			new_seller.set_password(form.restaurant_password.data)
 			db.session.add(new_seller)
 			db.session.commit()
+			session["user_id"] = new_seller.seller_id
+			session["logged_in"] = True
 			return redirect(url_for('index')) 
 
 	return render_template('signup.html', title='Sign Up', form=form, search=search)
