@@ -198,11 +198,13 @@ def search_page(searchQuery):
 	if searchQuery == 'browse':
 		search_results = seller.query.all()
 	else: 
+		print("@@@@@",searchQuery)
 		s = "%{}%".format(searchQuery)
 		seller_results = seller.query.filter(seller.seller_name.ilike(s)).all()
 		item_results = Inventory.query.filter(Inventory.item_name.ilike(s)).all()
-		print("########", seller_results, "######", item_results)
-		search_results = seller_results+item_results
+		zip_results = seller.query.filter_by(seller_zipcode = searchQuery).all()
+		print("########", zip_results)
+		search_results = seller_results+item_results+zip_results
 
 	if request.method == 'POST' and search.validate_on_submit():
 		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
