@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<div class="row justify-content-center">
+		<div class="col-md-3">
+		</div>
+		<div class="col-md-6">
+            <h1 class="display-4">Emily's Buttcheecks</h1>
+            <table class="table table-striped" style="background-color: white;">
+				{% for item in items %}
+				<tr>
+					<td>
+						<h2>{{item.item_name}}</h2><br/>
+						<h2><small>{{(item.item_description)}}</small></h2>
+						
+					</td>
+					<td>
+						<div class="item-price-div float-right my-2 my-sm-0">
+							<h2 class = "price-header">${{'%0.2f'|format(item.item_price|float)}}</h2>
+							<br/>
+							<a href= "{{url_for('addToCart', iD = item.id)}}"><button class="btn btn-dark add-to-cart">Add To Cart</button></a>
+						</div>
+					</td>
+
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div class="col-md-3">
+		</div>
+
+{% endblock %}

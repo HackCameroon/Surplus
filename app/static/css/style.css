@@ -11,8 +11,8 @@
 
 
 #index-body{
-  background-image: url("background-image.jpg");
-  background-color: #cccccc;
+  background-image: url("light-tan.png")
+  background-color: #cccc;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -125,4 +125,14 @@ input:checked + .slider:before {
 .submit-container {
   width: 66%;
   margin-left: 40%;
+}
+
+.item-price-div {
+  display: block;
+  right: 0;
+  top: 0;
+}
+
+.price-header {
+  right: 0;
 }

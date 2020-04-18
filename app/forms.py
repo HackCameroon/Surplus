@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, PasswordField, BooleanField, SubmitField, FloatField, IntegerField
+from wtforms import StringField, IntegerField, PasswordField, BooleanField, SubmitField, FloatField, IntegerField, Form, SelectField
 from wtforms.validators import DataRequired, EqualTo
 
 class LoginForm(FlaskForm):
@@ -7,10 +7,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
-
-class SearchForm(FlaskForm):
-	searchParam = StringField(validators=[DataRequired()], description='Search Restaurants')
-	zipcode = IntegerField(default = 0, description='e.g. 90007')
 
 class SignupForm(FlaskForm):
 	restaurant_email = StringField('Email', validators=[DataRequired()])
@@ -26,3 +22,23 @@ class SignupForm(FlaskForm):
 	restaurant_state = StringField('State', validators=[DataRequired()])
 	restaurant_zipcode = IntegerField('Zipcode', validators=[DataRequired()])
 	submit = SubmitField('Sign Up')
+
+class AddItemForm(FlaskForm):
+	itemname = StringField('Item Name', validators=[DataRequired()])
+	itemquantity = IntegerField('Quantity', validators=[DataRequired()])
+	itemprice = FloatField("Price", validators=[DataRequired()])
+	#itempicture = do this later
+	itemdescription = StringField('Description', validators=[DataRequired()])
+	submit = SubmitField('Add')
+
+class EditItemForm(FlaskForm):
+	itemname = StringField('Item Name', validators=[DataRequired()])
+	itemquantity = IntegerField('Quantity', validators=[DataRequired()])
+	itemprice = FloatField("Price", validators=[DataRequired()])
+	#itempicture = do this later
+	itemdescription = StringField('Description', validators=[DataRequired()])
+	submit = SubmitField('Update Item')
+
+class SearchForm(FlaskForm):
+	searchParam = StringField('search', [DataRequired()])
+	submit = SubmitField('Go', render_kw={'class': 'btn btn-success btn-block'})

@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<a href='/add' ><button class="btn my-2 my-sm-0 btn-dark float-right px-5">New Item</button></a>
 <div class="row">
 	<div class="col-sm-2">
 	</div>
@@ -21,8 +22,7 @@
 					<td>${{'%0.2f'|format(item.price|float)}}</td>
 					<td>{{(item.quantity)}}</td>
 					<td>{{(item.description)}}</td>
-					<td><a href= "{{url_for('edititem', name = item.name, iD = item.id)}}"><button class="btn my-2 my-sm-0 btn-dark float-right px-5"> Edit</button></a></td>
-
+					<td><button class="btn my-2 my-sm-0 btn-dark float-right px-5">Edit</button></td>
 				</tr>
 				{% endfor %}
 			</table>
@@ -30,7 +30,6 @@
 	</div>
 
 	<div class="col-sm-2">
-		<a href='/add' ><button class="btn my-2 my-sm-0 btn-dark float-right px-5">New Item</button></a>
 	</div>
 
 </div>

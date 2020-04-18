@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+	<div class="row justify-content-center">
+		<div class="col-md-3">
+		</div>
+		<div class="col-md-6">
+			{% for result in search_results %}
+			<div class="restaurant_result jumbotron jumbotron-fluid p-3 my-5">
+				<h1 class="display-2">
+					{{result.seller_name}}
+				</h1>
+			</div>
+			{% endfor %}
+			{% if search_results == None %}
+			<div>
+				<h2> Sorry, no results matched your search. </h2>
+			</div>
+			{% endif %}
+		</div>
+		<div class="col-md-3">
+		</div>
+	</div>
+
+{% endblock %}
