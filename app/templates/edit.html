@@ -7,25 +7,25 @@
 		</div>
 		<div class = "col-md-6">
 			<div class="container form-container" id="signup_form_container">
-				<h1 class="display-4">Add New Item</h1>
-				<form action="" method="post" novalidate>
+				<h1 class="display-4">Edit Your Item</h1>
+				<form action="" method="post" novalidate >
 					{{ form.hidden_tag() }}
 					<div class="form-group input-field">
-						{{ form.itemname.label }}
-						{{ form.itemname(size=32, class_="form-control") }}
-						flash("flashtest")
+                        {{ form.itemname.label }}
+                        {{data}}
+						{{ form.itemname(size=32, class_="form-control", value = item.name ) }}
 					</div>
 					<div class="form-group input-field">
-						{{ form.itemquantity.label }}
-						{{ form.itemquantity(size=32, class_="form-control") }}
+                        {{ form.itemquantity.label }}
+						{{ form.itemquantity(size=32, class_="form-control", value = item.quantity) }}
 					</div>
 					<div class="form-group input-field">
 						{{ form.itemprice.label }}
-						{{ form.itemprice(size=32, class="form-control") }}
+						{{ form.itemprice(size=32, class="form-control", value = '%0.2f'|format(item.price|float)) }}
 					</div>
 					<div class="form-group input-field">
 						{{ form.itemdescription.label }}
-						{{ form.itemdescription(size=200, class="form-control") }}
+						{{ form.itemdescription(size=200, class="form-control", value = item.description) }}
 					</div>
 					<div class="submit-container"> 
 						{{ form.submit(class_="btn btn-secondary btn-lg") }}

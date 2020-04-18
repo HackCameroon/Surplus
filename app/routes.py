@@ -1,29 +1,39 @@
 from flask import request, render_template, flash, redirect, url_for, make_response, session
 from flask import current_app as app
-from app.forms import LoginForm, SearchForm, SignupForm, AddItemForm
+from app.forms import LoginForm, SearchForm, SignupForm, AddItemForm, EditItemForm
 from app.models import db, seller, Inventory
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db.create_all()
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
 	search = SearchForm()
+
 	if session.get('logged_in') == True:
 		user_id = session.get('user_id')
 		name = seller.query.filter_by(seller_id=user_id).first().seller_name
 		user = {"username": name}
 	else:
 		user = {"username": "Customer!"}
-	return render_template('index.html', title="Home", user=user)
+
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
+	return render_template('index.html', title="Home", user=user, search=search)
 
 #sally is the best friend EVER
 @app.route('/login', methods=['GET','POST'])
 def login():
+
 	search = SearchForm()
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
 	if session.get('logged_in') == True:
 		return redirect(url_for('index'))
+
 	form = LoginForm()
 	if form.validate_on_submit():
 
@@ -38,9 +48,14 @@ def login():
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
+
 	search = SearchForm()
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
 	if session.get('logged_in') == True:
 		return redirect(url_for('index'))
+
 	form = SignupForm()
 	if form.validate_on_submit():
 			name = form.restaurant_name.data
@@ -58,6 +73,8 @@ def signup():
 			new_seller.set_password(form.restaurant_password.data)
 			db.session.add(new_seller)
 			db.session.commit()
+			session["user_id"] = new_seller.seller_id
+			session["logged_in"] = True
 			return redirect(url_for('index')) 
 
 	return render_template('signup.html', title='Sign Up', form=form, search=search)
@@ -67,104 +84,164 @@ def logout():
 	session.clear()
 	return redirect(url_for('index'))
 
+@app.route('/edit/<iD>', methods=['GET','POST'])
+def edititem(iD):
+	if (session.get('logged_in')):
+
+		form = EditItemForm()
+		search = SearchForm()
+		if request.method == 'POST' and search.validate_on_submit():
+			return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
+
+		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+
+		current_item = Inventory.query.filter_by(item_id = iD).first();
+
+		item = {
+				'name': current_item.item_name,
+				'quantity':  current_item.item_quantity,
+				'price':  current_item.item_price,
+				'description': current_item.item_description
+			}
+		
+
+
+		if form.validate_on_submit():
+
+				current_item.item_name = form.itemname.data
+				current_item.item_quantity = form.itemquantity.data
+				current_item.item_price = form.itemprice.data
+				current_item.item_description = form.itemdescription.data
+				db.session.commit()
+				return redirect(url_for('account'))
+				
+	else:
+		return redirect(url_for('index'))
+			
+	return render_template('edit.html', title="Add", form=form, search=search, user=current_user, item=item)
+
 @app.route('/add', methods=['GET','POST'])
 def additem():
-	form = AddItemForm()
-	search = SearchForm()
 
+	if (session.get('logged_in')):
 
-	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-	
-	if form.validate_on_submit():
-			itemname = form.itemname.data
-			itemquantity = form.itemquantity.data
-			itemprice = form.itemprice.data
-			itemdescription = form.itemdescription.data
+		form = AddItemForm()
+		search = SearchForm()
+		if request.method == 'POST' and search.validate_on_submit():
+			return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 
-			item = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
-			item2 = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
+		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+		flash("TESTFLASH")
+		if form.validate_on_submit():
+				item = Inventory.query.filter_by(item_name=form.itemname.data).first()
+				if (item):
+					print("duplicate item error")
+					return redirect(url_for('account'))
+				else:
+					itemname = form.itemname.data
+					itemquantity = form.itemquantity.data
+					itemprice = form.itemprice.data
+					itemdescription = form.itemdescription.data
+
+					item = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
 		
-			items = [item, item2]
-			
-			db.session.add(item)
-			db.session.commit()
-			#return redirect('/account')
-			#return render_template('account.html',data=Inventory.query.all(), user=current_user)
-			return redirect(url_for('account'))
-
+					db.session.add(item)
+					db.session.commit()
+					return redirect(url_for('account'))
+	else:
+		return redirect(url_for('index'))
 			
 	return render_template('add.html', title="Add", form=form, search=search, user=current_user)
 
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 def account():
+	if (session.get('logged_in')):
+		search = SearchForm()
+		if request.method == 'POST' and search.validate_on_submit():
+			return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
+		## Code to add an item to a seller's inventory
+		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+		name = "my cool dinner"
+		##
 
 
+		##get duplicate results so we can add to quantity instead of adding another exact item
+		duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
+		## need to do the quantity thing
+		for result in duplicate_results:
+			pass
 
 
-	search = SearchForm()
+		results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
+		items_array = []
+		for item in results:
+			item = {
+					'id' : item.item_id,
+					'name': item.item_name,
+					'price': item.item_price,
+					'quantity': item.item_quantity,
+					'description': item.item_description
+			}
+			items_array.append(item)
+	else:
+		return redirect(url_for('index'))
 
-	## Code to add an item to a seller's inventory
-	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-	name = "my cool dinner"
-	##
-
-
-	##get duplicate results so we can add to quantity instead of adding another exact item
-	duplicate_results = Inventory.query.filter(Inventory.item_name == name).join(seller).filter(seller.seller_id == current_user.seller_id).all()
-	## need to do the quantity thing
-	for result in duplicate_results:
-		pass
-
-
-
-
-	results = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
-	items_array = []
-	items = current_user.items
-	for item in results:
-		item = {
-				'name': item.item_name,
-				'price': item.item_price,
-				'quantity': item.item_quantity,
-				'description': item.item_description
-		}
-		items_array.append(item)
-
-	item_array = [
-				{
-					'name': 'margarita mix', 
-					'price': 5.00,
-					'quantity': 3,
-					'description': "testdescription"
-				},
-				{
-					'name': 'chicken soup',
-					'price': 2.00,
-					'quantity': 3,
-					'description': "testdescription" 
-				}, 
-				{
-					'name': 'beans',
-					'price': 16.00,
-					'quantity': 3,
-					'description': "testdescription"
-				}, 
-				{
-					'name': 'that one hot waiter',
-					'price': 0.00,
-					'quantity': 3,
-					'description': "testdescription"
-				} 
-			]
 	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
 
-@app.route('/Search')
-def search_page():
+@app.route('/search_page/<searchQuery>', methods=['GET', 'POST'])
+def search_page(searchQuery):
 	search = SearchForm()
-	zipcode_search = seller.query.join(seller).filter(seller.seller_zipcode).all()
-	for seller in zipcode_search:
-		seller_array = []
-		seller_array.append(seller)
-		results = seller_array
-	return render_template('#puthere', title="Search", data=results, items=seller_array, user=zipcode_search, search=search)
+
+	if searchQuery == 'browse':
+		search_results = seller.query.all()
+	else: 
+		s = "%{}%".format(searchQuery)
+		seller_results = seller.query.filter(seller.seller_name.ilike(s)).all()
+		item_results = Inventory.query.filter(Inventory.item_name.ilike(s)).all()
+		print("########", seller_results, "######", item_results)
+		search_results = seller_results+item_results
+
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
+	return render_template('search_page.html', title="Search", search=search, search_results=search_results)
+
+@app.route('/sellerpage/<iD>', methods=['GET', 'POST'])
+def seller_page(iD):
+
+	search = SearchForm()
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+
+	searchSeller = seller.query.filter_by(seller_id = iD).first()
+
+	seller_items = Inventory.query.join(seller).filter(seller.seller_id == iD).all()
+
+	return render_template('sellerpage.html', seller=searchSeller, items=seller_items, search=search)
+
+@app.route('/addToCart', methods=['GET', 'POST'])
+def addToCart():
+	search = SearchForm()
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
+	current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
+	seller_items = Inventory.query.join(seller).filter(seller.seller_id == current_user.seller_id).all()
+
+
+
+	return render_template('sellerpage.html', seller=current_user, items=seller_items, search=search)
+
+@app.route('/error')
+def error():
+	search = searchForm()
+	return render_template('errorpage.html', search=search)
+
+@app.route('/remove/<iD>')
+def deleteItem(iD):
+	item_to_delete = Inventory.query.filter_by(item_id=iD).first()
+	db.session.delete(item_to_delete)
+	db.session.commit()
+	return redirect(url_for('account'))

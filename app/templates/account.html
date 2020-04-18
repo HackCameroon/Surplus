@@ -2,15 +2,20 @@
 
 {% block content %}
 
-<a href='/add' ><button class="btn my-2 my-sm-0 btn-dark float-right px-5">New Item</button></a>
 <div class="row">
-	<div class="col-sm-2">
+	<div class="col-sm-3">
 	</div>
 
-	<div class="col-sm-8">
+	<div class="col-sm-6">
 		<div class="container">
 			<h1 class="display-4">{{user.seller_name}}</h1>
-			<table class="table table-striped" style="background-color: white;">
+			{% if not items %}
+				<div style="text-align: center" class= "jumbotron">
+	            	<h2> You currently have no items! </h2>
+	            	<a href='/add' ><button class="btn my-2 my-sm-0 btn-success btn-lg px-5">Add an Item!</button></a>
+            	</div>
+            {% else %}
+			<table class="table table-striped table-lg" style="background-color: white;">
 				<th scope="col">Item</th>
 				<th scope="col">Price</th>
 				<th scope="col">Quantity</th>
@@ -22,14 +27,21 @@
 					<td>${{'%0.2f'|format(item.price|float)}}</td>
 					<td>{{(item.quantity)}}</td>
 					<td>{{(item.description)}}</td>
-					<td><button class="btn my-2 my-sm-0 btn-dark float-right px-5">Edit</button></td>
+					<td>
+						<div class="container float-right" style="text-align: right">
+							<a href= "{{url_for('edititem', name = item.name, iD = item.id)}}"><button class="btn btn-md btn-primary">Edit   <i class="fa fa-edit"></i></button></a>
+							<a href= "{{url_for('deleteItem', iD = item.id)}}"><button class="btn my-2 my-sm-0 btn-danger btn-md"> <i class="fa fa-times fa-fw" style="font-size: 25px; color: white"></i> </button></a>
+						</div>
+					</td>
 				</tr>
 				{% endfor %}
 			</table>
+			<a href='/add' ><button class="btn my-2 my-sm-0 btn-dark float-right px-5">New Item</button></a>
+			{% endif %}
 		</div>
 	</div>
 
-	<div class="col-sm-2">
+	<div class="col-sm-3">
 	</div>
 
 </div>
