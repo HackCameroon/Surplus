@@ -11,12 +11,7 @@
 
 
 #index-body{
-  background-image: url("light-tan.png") !important;
-  background-color: #cccc;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
+  background-color: #C0D9AF !important;
 }
 
 #SearchButton {
@@ -95,14 +90,12 @@ input:checked + .slider:before {
   margin-top: 25px;
   margin-bottom: 50px;
   padding: 10px;
-  background-color: #fffef2;
-  border-radius: 10px;
-  font-family: Verdana, sans-serif;
+  border-left: 5px solid #7c7c7c;
+  border-right: 5px solid #7c7c7c;
+  background-color: #fffcf0;
   font-size: var(--text-size);
   font-variant: small-caps;
-  -webkit-box-shadow: 3px 3px 10px 10px #343844;  
-  -moz-box-shadow:    3px 3px 10px 10px #343844;  
-  box-shadow:         3px 3px 10px 10px #343844; 
+
 }
 
 #password-container {
