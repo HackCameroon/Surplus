@@ -9,6 +9,12 @@
 	<div class="col-sm-8">
 		<div class="container">
 			<h1 class="display-4">{{user.seller_name}}</h1>
+			{% if not items %}
+				<div style="text-align: center" class= "jumbotron">
+	            	<h2> You currently have no items! </h2>
+	            	<a href='/add' ><button class="btn my-2 my-sm-0 btn-success btn-lg px-5">Add an Item!</button></a>
+            	</div>
+            {% else %}
 			<table class="table table-striped" style="background-color: white;">
 				<th scope="col">Item</th>
 				<th scope="col">Price</th>
@@ -26,11 +32,12 @@
 				</tr>
 				{% endfor %}
 			</table>
+			<a href='/add' ><button class="btn my-2 my-sm-0 btn-dark float-right px-5">New Item</button></a>
+			{% endif %}
 		</div>
 	</div>
 
 	<div class="col-sm-2">
-		<a href='/add' ><button class="btn my-2 my-sm-0 btn-dark float-right px-5">New Item</button></a>
 	</div>
 
 </div>

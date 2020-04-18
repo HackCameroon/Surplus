@@ -41,4 +41,4 @@ class EditItemForm(FlaskForm):
 
 class SearchForm(FlaskForm):
 	searchParam = StringField('search', [DataRequired()])
-	submit = SubmitField('Go', render_kw={'class': 'btn btn-success btn-block'})
+	submit = SubmitField('Go', render_kw={'class': 'btn btn-success'})
