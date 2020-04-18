@@ -20,11 +20,6 @@ def index():
 
 	if request.method == 'POST' and search.validate_on_submit():
 		return redirect((url_for('search_page', query=search.searchParam.data)))
-		#searchThing = search.searchParam.data
-		#print(searchThing)
-		#redirect(url_for('search_page', searchTerm=searchThing))
-	#else:
-		#print("not validating")
 
 	return render_template('index.html', title="Home", user=user, search=search)
 
@@ -185,15 +180,13 @@ def account():
 
 	return render_template('account.html', title="Account", items=items_array, user=current_user, search=search)
 
-@app.route('/search_page/<query>')
+@app.route('/search_page/<query>', methods=['GET', 'POST'])
 def search_page(query):
 	search = SearchForm()
 
-	#zipcode_search = seller.query.join(seller).filter(seller.seller_zipcode).all()
-	#for seller in zipcode_search:
-		#seller_array = []
-		#results = seller_arrays
-		#print(seller)
+	if request.method == 'POST' and search.validate_on_submit():
+		return redirect((url_for('search_page', query=search.searchParam.data)))
+
 	return render_template('search_page.html', title="Search", search=search, searchTerm=query)
 
 @app.route('/sellerpage')

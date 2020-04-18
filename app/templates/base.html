@@ -26,6 +26,12 @@
                   <span>  km</span>
                   <button class="btn my-2 my-sm-0" type="submit">Go</button>
                 </form>-->
+
+                <form class="form-inline my-2 my-lg-0" action="" method="post">
+                  {{search.hidden_tag()}}
+                  {{search.searchParam(size=32, class_="form-control")}}
+                  {{search.submit()}}
+                </form>
                 
 
                 {% if session.get('logged_in') == True %}
