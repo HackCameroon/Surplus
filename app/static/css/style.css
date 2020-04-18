@@ -11,16 +11,16 @@
 
 
 #index-body{
-<<<<<<< HEAD
 
-  /*background-color: #FFEBCD;8?
+
+  /*background-color: #FFEBCD;*/
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
 =======
   background-color: #C0D9AF !important;
->>>>>>> 9cac1538d451df450e71709475d7957794a5e96c
+
 }
 
 #SearchButton {
