@@ -11,22 +11,15 @@
 
 
 #index-body{
-<<<<<<< HEAD
-  
-||||||| merged common ancestors
   background-color: #C0D9AF !important;
-=======
-<<<<<<< HEAD
 
-  /*background-color: #FFEBCD;8?
+
+  /*background-color: #FFEBCD;*/
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-=======
-  background-color: #C0D9AF !important;
->>>>>>> 9cac1538d451df450e71709475d7957794a5e96c
->>>>>>> bf476e1b699e69fd76dd7548b218b49df8c7c4ab
+
 }
 
 #SearchButton {
