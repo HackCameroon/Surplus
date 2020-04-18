@@ -131,11 +131,9 @@ def additem():
 		if request.method == 'POST' and search.validate_on_submit():
 			return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
 
-
 		current_user = seller.query.filter_by(seller_id = session.get('user_id')).first()
-		
+		flash("TESTFLASH")
 		if form.validate_on_submit():
-
 				item = Inventory.query.filter_by(item_name=form.itemname.data).first()
 				if (item):
 					print("duplicate item error")
@@ -147,9 +145,7 @@ def additem():
 					itemdescription = form.itemdescription.data
 
 					item = Inventory(item_name=itemname, item_price=itemprice, item_quantity = 1, item_image = "dolater.jpg", item_description = itemdescription, seller=current_user)
-
-
-							
+		
 					db.session.add(item)
 					db.session.commit()
 					return redirect(url_for('account'))
@@ -206,8 +202,7 @@ def search_page(searchQuery):
 		seller_results = seller.query.filter(seller.seller_name.ilike(s)).all()
 		item_results = Inventory.query.filter(Inventory.item_name.ilike(s)).all()
 		print("########", seller_results, "######", item_results)
-
-	search_results = seller_results+item_results
+		search_results = seller_results+item_results
 
 	if request.method == 'POST' and search.validate_on_submit():
 		return redirect((url_for('search_page', searchQuery=search.searchParam.data)))
