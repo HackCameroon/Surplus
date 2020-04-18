@@ -203,4 +203,3 @@ def addToCart():
 
 
 	return render_template('sellerpage.html', seller=current_user, items=seller_items)
->>>>>>> adding
