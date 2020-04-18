@@ -19,6 +19,8 @@
   background-size: cover;
   position: relative;
 
+  background-color: #FFFFFF !important;
+
 }
 
 #SearchButton {
@@ -70,8 +72,17 @@ input:checked + .slider:before {
 .navbar {
     margin-bottom: 0;
     width: 100%;
+    border-bottom: black;
 }
 
+/* horizontal line */
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
 /* graphic 
 .bg-image {
   background-image: url('../static/graphic.png');
@@ -95,9 +106,13 @@ input:checked + .slider:before {
   margin-top: 25px;
   margin-bottom: 50px;
   padding: 10px;
-  border-left: 8px solid #7c7c7c;
-  border-right: 8px solid #7c7c7c;
-  background-color: white;
+<<<<<<< HEAD
+  border-left: 5px solid #7c7c7c;
+  border-right: 5px solid #7c7c7c;
+  background-color: #FFFFFF;
+=======
+
+>>>>>>> c4c89746a33103e1a50d510733b2e7437b323d2d
   font-size: var(--text-size);
   font-variant: small-caps;
 
@@ -133,4 +148,8 @@ input:checked + .slider:before {
   position: fixed;
   font-size: 67px;
   margin-left: 300px;
+}
+
+.about {
+  background-color: grey;
 }
